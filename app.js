@@ -111,7 +111,7 @@ app.post("/api/example",async (req, res, next) => {
                 res.status(200).json({
                     error: false,
                     message: "Email Sent",
-                    response:res.body
+                    response:req.body
                 });
             // }
         // })
