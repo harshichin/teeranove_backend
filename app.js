@@ -37,8 +37,8 @@ app.post("/api/submit",async (req, res, next) => {
             requireTLS: true,
             service: 'gmail',
             auth: {
-                user: process.env.Email,
-                pass: process.env.Password
+                user: "digitoonz2021@gmail.com",
+                pass: "uqyhrdmuohkucfni"
             }
         });
         var options = {
