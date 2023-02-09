@@ -70,6 +70,59 @@ app.post("/api/submit",async (req, res, next) => {
 });
 
 
+
+app.post("/api/example",async (req, res, next) => {
+    try {
+        const {
+            fullName,
+            emailId,
+            phone,
+            subject,
+            message
+        } = req.body
+        // mail service
+        // var mailTransporter = nodemailer.createTransport({
+        //     host: 'smtp.gmail.com',
+        //     port: 587,
+        //     secure: false,
+        //     requireTLS: true,
+        //     service: 'gmail',
+        //     auth: {
+        //         user: "digitoonz2021@gmail.com",
+        //         pass: "uqyhrdmuohkucfni"
+        //     }
+        // });
+        // var options = {
+        //     from: process.env.Email,
+        //     to: [emailId],
+        //     subject: 'Website Notification',
+        //     html: `Hello ${fullName,
+        //         emailId,
+        //         phone,
+        //         subject,
+        //         message} `
+        // };
+
+        // await mailTransporter.sendMail(options, async function(error, info) {
+        //     if (error) {
+        //         console.log(error);
+        //         next(error)
+        //     } else {
+                res.status(200).json({
+                    error: false,
+                    message: "Email Sent",
+                    response:res.body
+                });
+            // }
+        // })
+    } catch (err) {
+        console.log("CATCH", err);
+        next(err)
+    }
+});
+
+
+
 app.use((err, req, res, next) => {
     res.status(500).json({
         error: true,
