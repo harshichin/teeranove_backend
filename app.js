@@ -17,7 +17,7 @@ app.use(express.json({
 app.use(cors("*"));
 
 app.get("/", (req, res) => {
-	res.send("Website");
+	res.send("TerraNova Backend");
 });
 
 app.post("/api/submit",async (req, res, next) => {
