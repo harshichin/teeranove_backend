@@ -20,12 +20,13 @@ app.get("/", (req, res) => {
 	res.send("Website");
 });
 
-app.post("/api/submit-request",async (req, res, next) => {
+app.post("/api/submit",async (req, res, next) => {
     try {
         const {
-            name,
+            fullName,
+            emailId,
             phone,
-            email,
+            subject,
             message
         } = req.body
         // mail service
@@ -42,9 +43,13 @@ app.post("/api/submit-request",async (req, res, next) => {
         });
         var options = {
             from: process.env.Email,
-            to: [email],
+            to: [emailId],
             subject: 'Website Notification',
-            html: `Hello ${name}`
+            html: `Hello ${fullName,
+                emailId,
+                phone,
+                subject,
+                message} `
         };
 
         await mailTransporter.sendMail(options, async function(error, info) {
