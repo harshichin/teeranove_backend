@@ -31,14 +31,15 @@ app.post("/api/submit",async (req, res, next) => {
         } = req.body
         // mail service
         var mailTransporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 587,
-            secure: false,
-            requireTLS: true,
-            service: 'gmail',
+            host: "smtp.gmail.com",
+			port: 587,
+			secureConnection: "false",
+			tls: {
+				rejectUnauthorized: false,
+			},
             auth: {
-                user: "digitoonz2021@gmail.com",
-                pass: "uqyhrdmuohkucfni"
+                user: process.env.Email,
+                pass: process.env.Password
             }
         });
         var options = {
