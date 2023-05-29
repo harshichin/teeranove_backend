@@ -14,7 +14,23 @@ const getAllUsers = async (req, res, next) => {
             response,
         });
     } catch (err) {
-        next(err.message);
+        next(err);
+    }
+};
+
+const getUser = async (req, res, next) => {
+    try {
+        let id = req.params.id
+        const response = await userModel.findById({
+            _id: id,
+        });
+        res.status(200).json({
+            error: false,
+            message: "Record Found",
+            response,
+        });
+    } catch (err) {
+        next(err);
     }
 };
 
@@ -27,11 +43,9 @@ const addUser = async (req, res, next) => {
             role,
             password
         } = req.body;
-        console.log(req.body);
         const user = await userModel.findOne({
             emailId,
         });
-        console.log(user);
         if (!user) {
             const response = await userModel.insertMany([{
                 name: name.charAt(0).toUpperCase() + name.slice(1),
@@ -52,10 +66,43 @@ const addUser = async (req, res, next) => {
             });
         }
     } catch (err) {
-        next(err.message);
+        next(err);
     }
 };
 
+const editUser = async (req, res, next) => {
+    try {
+        const {
+            name,
+            emailId,
+            phoneNo,
+            role,
+            password
+        } = req.body;
+        await userModel.updateOne({
+            _id: req.params.id,
+        }, {
+            $set: {
+                name,
+                emailId,
+                phoneNo,
+                role,
+                password
+            },
+        });
+        const response = await userModel.findOne({
+            _id: req.params.id,
+        });
+        res.status(200).json({
+            error: false,
+            message: "Details Updated Successfully",
+            _id: req.params.id,
+            response,
+        });
+    } catch (err) {
+        next(err);
+    }
+};
 
 const deleteUser = async (req, res, next) => {
     try {
@@ -72,9 +119,10 @@ const deleteUser = async (req, res, next) => {
     }
 };
 
-
 module.exports = {
     getAllUsers,
+    getUser,
     addUser,
+    editUser,
     deleteUser
 };

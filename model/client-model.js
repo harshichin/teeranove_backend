@@ -8,7 +8,8 @@ const clientSchema = new mongoose.Schema({
     },
     clientId: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     emailId: {
         type: String,
@@ -27,8 +28,35 @@ const clientSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    address: {
+        area: {
+            type: String,
+            required: true
+        },
+        landmark: {
+            type: String,
+            required: true
+        },
+        city: {
+            type: String,
+            required: true
+        },
+        state: {
+            type: String,
+            required: true
+        },
+        country: {
+            type: String,
+            required: true
+        },
+        pincode: {
+            type: Number,
+            required: true
+        }
     }
 });
+clientSchema.set('timestamps', true);
 
 const clientModel = mongoose.model('client', clientSchema);
 module.exports = {

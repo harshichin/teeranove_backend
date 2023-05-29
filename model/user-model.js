@@ -23,8 +23,13 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    place: {
+        type: String,
+        required: true
     }
 });
+userSchema.set('timestamps', true);
 
 const userModel = mongoose.model('users', userSchema);
 module.exports = {

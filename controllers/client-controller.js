@@ -14,7 +14,7 @@ const getAllClient = async (req, res, next) => {
             response,
         });
     } catch (err) {
-        next(err.message);
+        next(err);
     }
 };
 
@@ -30,9 +30,50 @@ const getClient = async (req, res, next) => {
             response,
         });
     } catch (err) {
-        next(err.message);
+        next(err);
     }
 };
+
+async function getClientID() {
+    const lastClient = await clientModel.findOne({}, {
+        "clientId": 1,
+        _id: 0
+    }).sort({
+        "clientId": -1
+    });
+    let clientId = ''
+    if (lastClient) {
+        const month = new Date().getMonth();
+        const year = new Date().getFullYear().toString().slice(-2);
+        let mth = ''
+        const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
+        if (month + 1 >= 0 && month + 1 <= 12) {
+            mth = alphabet[month].substring(0, 3)
+        } else {
+            return 'Invalid month';
+        }
+        let str = lastClient.clientId;
+        str = str.substring(8);
+        let int = parseInt(str) + 1
+        let startID = "TNCLT"
+        clientId = startID + year + mth + int
+        return clientId
+    } else {
+        const month = new Date().getMonth();
+        const year = new Date().getFullYear().toString().slice(-2);
+        let mth = ''
+        const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
+        if (month + 1 >= 0 && month + 1 <= 12) {
+            mth = alphabet[month].substring(0, 3)
+        } else {
+            return 'Invalid month';
+        }
+        let int = 1
+        let startID = "TNCLT"
+        clientId = startID + year + mth + int
+        return clientId
+    }
+}
 
 const addClient = async (req, res, next) => {
     try {
@@ -47,51 +88,23 @@ const addClient = async (req, res, next) => {
             emailId,
         });
         if (!client) {
-            const lastClient = await clientModel.findOne({}, {
-                "clientId": 1,
-                _id: 0
-            }).sort({
-                "clientId": -1
-            });
-            let clientId = ''
-            if (lastClient) {
-                const month = new Date().getMonth();
-                const year = new Date().getFullYear().toString().slice(-2);
-                let mth = ''
-                const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
-                if (month + 1 >= 0 && month + 1 <= 12) {
-                    mth = alphabet[month].substring(0, 3)
-                } else {
-                    return 'Invalid month';
-                }
-                let str = lastClient.clientId;
-                str = str.substring(8);
-                let int = parseInt(str) + 1
-                let startID = "TNCLT"
-                clientId = startID + year + mth + int
-            } else {
-                const month = new Date().getMonth();
-                const year = new Date().getFullYear().toString().slice(-2);
-                let mth = ''
-                const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
-                if (month + 1 >= 0 && month + 1 <= 12) {
-                    mth = alphabet[month].substring(0, 3)
-                } else {
-                    return 'Invalid month';
-                }
-                let int = 1
-                let startID = "TNCLT"
-                console.log(startID + year + mth + int);
-                clientId = startID + year + mth + int
-            }
+            const clientId = getClientID()
             const response = await clientModel.insertMany([{
                 clientId,
                 name: name.charAt(0).toUpperCase() + name.slice(1),
                 emailId,
                 phoneNo,
                 role: "CLIENT",
-                password
-            }, ]);
+                password,
+                address: {
+                    area,
+                    landmark,
+                    city,
+                    state,
+                    country,
+                    pincode
+                }
+            }]);
             res.status(200).json({
                 error: false,
                 message: "Registered Successfully",
@@ -104,10 +117,61 @@ const addClient = async (req, res, next) => {
             });
         }
     } catch (err) {
-        next(err.message);
+        next(err);
     }
 };
 
+const editClient = async (req, res, next) => {
+    try {
+        const {
+            clientId,
+            name,
+            emailId,
+            phoneNo,
+            role,
+            password,
+            address,
+            area,
+            landmark,
+            city,
+            state,
+            country,
+            pincode
+
+        } = req.body;
+        await userModel.updateOne({
+            _id: req.params.id,
+        }, {
+            $set: {
+                clientId,
+                name: name.charAt(0).toUpperCase() + name.slice(1),
+                emailId,
+                phoneNo,
+                role: "CLIENT",
+                password,
+                address: {
+                    area,
+                    landmark,
+                    city,
+                    state,
+                    country,
+                    pincode
+                }
+            },
+        });
+        const response = await userModel.findOne({
+            _id: req.params.id,
+        });
+        res.status(200).json({
+            error: false,
+            message: "Details Updated Successfully",
+            _id: req.params.id,
+            response,
+        });
+    } catch (err) {
+        next(err);
+    }
+};
 
 const deleteClient = async (req, res, next) => {
     try {
@@ -129,5 +193,6 @@ module.exports = {
     getAllClient,
     getClient,
     addClient,
+    editClient,
     deleteClient
 };
