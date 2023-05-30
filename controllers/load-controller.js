@@ -27,21 +27,21 @@ const createLoad = async (req, res, next) => {
             clientPartnerName,
             loadNumber
         } = req.body;
-            const response = await loadModel.insertMany([{
-                client,
-                pickUpLocation,
-                pickUpDate,
-                materialCode,
-                dropLocation,
-                quantity,
-                clientPartnerName,
-                loadNumber
-            }, ]);
-            res.status(200).json({
-                error: false,
-                message: "Load Created added Successfully",
-                response,
-            });
+        const response = await loadModel.insertMany([{
+            client,
+            pickUpLocation,
+            pickUpDate,
+            materialCode,
+            dropLocation,
+            quantity,
+            clientPartnerName,
+            loadNumber
+        }, ]);
+        res.status(200).json({
+            error: false,
+            message: "Load Created added Successfully",
+            response,
+        });
     } catch (err) {
         next(err);
     }

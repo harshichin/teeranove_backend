@@ -10,7 +10,7 @@ const loadSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    pickUpDate:{
+    pickUpDate: {
         type: String,
         required: true
     },
@@ -26,11 +26,11 @@ const loadSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    clientPartnerName :{
+    clientPartnerName: {
         type: String,
         required: true
     },
-    loadNumber :{
+    loadNumber: {
         type: String,
         required: true
     },

@@ -2,15 +2,15 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema
 
 const locationMasterSchema = new mongoose.Schema({
-    companyName:{
+    companyName: {
         type: String,
         required: true
     },
-    location:{
+    location: {
         type: String,
         required: true
     },
-    fullAddress:{
+    fullAddress: {
         type: String,
         required: true
     }
@@ -18,11 +18,11 @@ const locationMasterSchema = new mongoose.Schema({
 locationMasterSchema.set('timestamps', true);
 
 const materialTypeMasterSchema = new mongoose.Schema({
-    materialName:{
+    materialName: {
         type: String,
         required: true
     },
-    materialCode:{
+    materialCode: {
         type: String,
         required: true
     }
