@@ -13,8 +13,8 @@ app.use(express.json({
     limit: "50mb"
 }));
 
-//Database connection
-// require('./config/db');
+// Database connection
+require('./config/db');
 
 app.use(cors("*"));
 
