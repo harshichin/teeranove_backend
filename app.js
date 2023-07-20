@@ -14,7 +14,7 @@ app.use(express.json({
 }));
 
 //Database connection
-require('./config/db');
+// require('./config/db');
 
 app.use(cors("*"));
 
@@ -34,7 +34,7 @@ const load = require("./routes/load-router");
 app.use("/load", load);
 
 app.get("/", (req, res) => {
-    res.send("TerraNova Backend");
+    res.send("TerraNova Backend Running");
 });
 
 app.use((err, req, res, next) => {
@@ -47,5 +47,6 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, () => {
+
     console.log(`App running on ${port}`);
 });
